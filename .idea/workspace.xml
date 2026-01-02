@@ -4,19 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5b80042d-7369-48cb-815e-26be9e13ae53" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Base_Test/Base_Tests.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Base_Test/Datadriver_Factory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Core/Base_Page.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/DOM/Search_DOM.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Pages/Search_Page.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/Search_Test.java" afterDir="false" />
+    <list default="true" id="5b80042d-7369-48cb-815e-26be9e13ae53" name="Changes" comment="primera pasada 31122025">
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Utils/Config_Reader.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Utils/Waits.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/config.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/testng.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Base_Test/Base_Tests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/Base_Test/Base_Tests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Base_Test/Datadriver_Factory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Driver/Datadriver_Factory.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,9 +29,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 3
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
   <component name="ProjectId" id="37c6yklagEPr2ABNowaJh9AwTxP" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -47,11 +43,17 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
     "onboarding.tips.debug.path": "C:/Users/digmy/PROJECTS/Preparacion_Selenium/src/main/java/Automation/Main.java"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\digmy\PROJECTS\Preparacion_Selenium" />
+    </key>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -61,7 +63,20 @@
       <option name="presentableId" value="Default" />
       <updated>1767190268522</updated>
     </task>
+    <task id="LOCAL-00001" summary="primera pasada 31122025">
+      <option name="closed" value="true" />
+      <created>1767191373893</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1767191373893</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="primera pasada 31122025" />
+    <option name="LAST_COMMIT_MESSAGE" value="primera pasada 31122025" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
