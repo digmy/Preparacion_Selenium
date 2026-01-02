@@ -104,9 +104,6 @@ public class ActionHelpers {
         return generateBirthday(type.minAge, type.maxAge);
     }
 
-
-    //
-
     // ===========Números Random=============
 
     // Número aleatorio entre min y max
