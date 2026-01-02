@@ -14,9 +14,9 @@ import java.util.List;
 import org.apache.logging.log4j.Logger;
 
 //evito duplicar WebDriverWait
-public class Waits {
+public final class Waits {
 
-    private static int TIMEOUT_SECONDS = 10;
+    private static final int TIMEOUT_SECONDS = 10;
     //ayuda a debuggear
     private static final Logger logger = LogManager.getLogger(Waits.class);
 
