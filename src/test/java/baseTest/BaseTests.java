@@ -1,7 +1,7 @@
-package Base_Test;
+package baseTest;
 
-import Utils.Config_Reader;
-import Driver.Datadriver_Factory;
+import utils.ConfigReader;
+import driver.DatadriverFactory;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -9,18 +9,18 @@ import org.testng.annotations.BeforeMethod;
 import java.time.Duration;
 
 //abstracta como todas las clases base
-public abstract class Base_Tests {
+public abstract class BaseTests {
 
     // protected: accesible por clases hijas (tus tests)
     protected WebDriver driver;
 
     @BeforeMethod
     public void setUp() {
-        String browser = Config_Reader.get("browser");
-        String url = Config_Reader.get("url");
+        String browser = ConfigReader.get("browser");
+        String url = ConfigReader.get("url");
 
-        Datadriver_Factory.initDriver(browser);
-        driver = Datadriver_Factory.getDriver();
+        DatadriverFactory.initDriver(browser);
+        driver = DatadriverFactory.getDriver();
 
         // waits base
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
@@ -31,7 +31,7 @@ public abstract class Base_Tests {
 
     @AfterMethod(alwaysRun = true)
     public void tearDown() {
-        Datadriver_Factory.quitDriver();
+        DatadriverFactory.quitDriver();
     }
 
 }

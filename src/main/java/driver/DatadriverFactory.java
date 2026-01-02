@@ -1,4 +1,4 @@
-package Driver;
+package driver;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
@@ -7,7 +7,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 
 /*clase estatica que no debe ser instanciada, administra WebDrivers por Thread(paralelismo,
 crea drivers según el browser y configura opciones)*/
-public class Datadriver_Factory {
+public class DatadriverFactory {
 
     /*ThreadLocal lo usé para que cada test tenga su propia instancia de WebDriver y evitar conflictos si en algún
     momento los tests se ejecutan en paralelo. Aunque ahora los corro secuenciales, deja el framework
@@ -15,7 +15,7 @@ public class Datadriver_Factory {
     private static final ThreadLocal<WebDriver> driver = new ThreadLocal<>();
 
     // private constructor: no quiero que instancien esta clase (utilitaria)
-    private Datadriver_Factory() {}
+    private DatadriverFactory() {}
 
     //obtiene el driver actual
     public static WebDriver getDriver(){

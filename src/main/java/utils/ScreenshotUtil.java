@@ -1,4 +1,4 @@
-package Utils;
+package utils;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,7 +12,7 @@ import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import Driver.Datadriver_Factory;
+import driver.DatadriverFactory;
 
 //la llamo desde un TestNG Listener cuando un test falla
 public class ScreenshotUtil {
@@ -27,7 +27,7 @@ public class ScreenshotUtil {
     public static final String takeScreenshot(String testName) {
 
         //refuerza el uso correcto del TheardLocal, ya que obtengo el driver correcto en cada caso
-        WebDriver driver = Datadriver_Factory.getDriver();
+        WebDriver driver = DatadriverFactory.getDriver();
 
         //prevuene NullPointerException(control defensivo)
         if (driver == null) {

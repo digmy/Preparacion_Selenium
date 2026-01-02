@@ -1,10 +1,10 @@
-package Utils;
+package utils;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-public class Config_Reader {
+public class ConfigReader {
 
     //static: “acceso global simple”
     private static final Properties props = new Properties();
@@ -19,7 +19,7 @@ public class Config_Reader {
     }
 
     // private constructor: no quiero que instancien esta clase (utilitaria)
-    private Config_Reader() {}
+    private ConfigReader() {}
 
     //static: “acceso global simple”
     public static String get(String key) {

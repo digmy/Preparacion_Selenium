@@ -1,6 +1,6 @@
-package Utils;
+package utils;
 
-import Driver.Datadriver_Factory;
+import driver.DatadriverFactory;
 import org.apache.logging.log4j.LogManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -25,7 +25,7 @@ public class Waits {
 
     private static WebDriverWait getWait(){
         return new WebDriverWait(
-                Datadriver_Factory.getDriver(),
+                DatadriverFactory.getDriver(),
                 Duration.ofSeconds(TIMEOUT_SECONDS)
         );
 
