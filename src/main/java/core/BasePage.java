@@ -23,7 +23,7 @@ public abstract class BasePage {
     protected final WebDriver driver;
     protected final Actions actions;
     //ayuda a debuggear
-    private static final Logger logger = LogManager.getLogger(Waits.class);
+    private static final Logger logger = LogManager.getLogger(BasePage.class);
 
     protected BasePage(){
         this.driver = DatadriverFactory.getDriver();
@@ -36,7 +36,7 @@ public abstract class BasePage {
     //==============Clicks===========
 
     //click por elemento
-    protected static void clickByElement(WebElement element) {
+    protected void clickByElement(WebElement element) {
         logger.info("Click en elemento: " + element);
         Waits.waitForClickableByElement(element).click();
     }
@@ -73,7 +73,7 @@ public abstract class BasePage {
     //============Escribir=============
 
     //escribir en input
-    protected static void type(By locator, String text) {
+    protected void type(By locator, String text) {
         WebElement element = Waits.waitForVisibility(locator);
         element.clear();
         element.sendKeys(text);
@@ -154,7 +154,7 @@ public abstract class BasePage {
         }
     }
 
-    public static boolean verifyPassengerSection(By locator) {
+    public boolean verifyPassengerSection(By locator) {
 
         try {
             out.println("Searching Passenger section");
@@ -166,7 +166,7 @@ public abstract class BasePage {
         }
     }
 
-    public static boolean verifyCabinNumber(By locator) {
+    public boolean verifyCabinNumber(By locator) {
 
         try {
             out.println("Searching Cabin Type section");
