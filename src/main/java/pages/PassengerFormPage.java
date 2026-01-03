@@ -3,11 +3,15 @@ package pages;
 import core.BasePage;
 import dom.CommonDOM;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import utils.ActionHelpers;
 import utils.NextStep;
 import utils.PassengerType;
 import utils.Waits;
+
+import java.util.List;
 
 import static java.lang.System.out;
 
@@ -125,7 +129,9 @@ public class PassengerFormPage extends BasePage {
 
     }
 
+    //llena los datos de los pasajero si la seccion esta a la vista
     public void fillDocumentsIfPresent() {
+
         if (!isVisible(documentPassenger1Dropdown)) {
             out.println("Documents section not present -> skipping documents");
             return;
@@ -133,14 +139,34 @@ public class PassengerFormPage extends BasePage {
 
         out.println("Documents section present -> filling documents");
 
-        clickRandom(documentPassenger1Dropdown);
-        type(ciNumberPassenger1, ActionHelpers.randomString(7));
-        type(ciExpiryDatePassenger1, ActionHelpers.futureDate());
+        fillDocumentForPassenger(documentPassenger1Dropdown, ciNumberPassenger1, ciExpiryDatePassenger1);
 
         if (isVisible(documentPassenger2Dropdown)) {
-            clickRandom(documentPassenger2Dropdown);
-            type(ciNumberPassenger2, ActionHelpers.randomString(7));
-            type(ciExpiryDatePassenger2, ActionHelpers.futureDate());
+            fillDocumentForPassenger(documentPassenger2Dropdown, ciNumberPassenger2, ciExpiryDatePassenger2);
         }
     }
+
+    //para compilar el form de los docs
+    private void fillDocumentForPassenger(By documentDropdown, By docNumber, By docExpiry) {
+
+        Waits.waitUntilLoaderDisappear(CommonDOM.shipLoader);
+
+        WebElement selectEl = Waits.waitForVisibility(documentDropdown);
+        Select select = new Select(selectEl);
+
+        List<WebElement> options = select.getOptions();
+
+        Assert.assertTrue(options.size() >= 2, "Not enough document options available");
+
+        int index = ActionHelpers.randomInt(1, options.size() - 1);
+
+        out.println("Document selected: " + options.get(index).getText());
+
+        select.selectByIndex(index);
+
+        type(docNumber, ActionHelpers.randomString(7));
+        type(docExpiry, ActionHelpers.futureDate());
+    }
+
+
 }

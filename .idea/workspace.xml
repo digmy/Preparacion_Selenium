@@ -4,26 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5b80042d-7369-48cb-815e-26be9e13ae53" name="Changes" comment="tercera pasada 03012026">
-      <change afterPath="$PROJECT_DIR$/src/main/java/controller/BookingFlow.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pages/CabinNumberPage.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pages/CabinPositionPage.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pages/CheckoutPage.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pages/InsurancePage.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pages/OffersPackagePage.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pages/PassengerFormPage.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/BookingFlowTest.java" afterDir="false" />
+    <list default="true" id="5b80042d-7369-48cb-815e-26be9e13ae53" name="Changes" comment="tercera pasada 03012026... tengo wue controlar una ventana emergente que sale en las cabinas y cerrarla con el closepopus genericos">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/core/BasePage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/BasePage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pages/CabinTypePage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pages/CabinTypePage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pages/ExperiencePage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pages/ExperiencePage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pages/HomePage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pages/HomePage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pages/OffersPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pages/OffersPage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pages/SearchPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pages/SearchPage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pages/PassengerFormPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pages/PassengerFormPage.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/utils/ActionHelpers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/ActionHelpers.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utils/ConfigReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/ConfigReader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utils/NextStep.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/NextStep.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/baseTest/BaseTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/baseTest/BaseTests.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -142,7 +127,15 @@
       <option name="project" value="LOCAL" />
       <updated>1767452294300</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="tercera pasada 03012026... tengo wue controlar una ventana emergente que sale en las cabinas y cerrarla con el closepopus genericos">
+      <option name="closed" value="true" />
+      <created>1767480383694</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1767480383694</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -160,7 +153,8 @@
     <MESSAGE value="primera pasada 31122025" />
     <MESSAGE value="segunda pasada 02012026" />
     <MESSAGE value="tercera pasada 03012026" />
-    <option name="LAST_COMMIT_MESSAGE" value="tercera pasada 03012026" />
+    <MESSAGE value="tercera pasada 03012026... tengo wue controlar una ventana emergente que sale en las cabinas y cerrarla con el closepopus genericos" />
+    <option name="LAST_COMMIT_MESSAGE" value="tercera pasada 03012026... tengo wue controlar una ventana emergente que sale en las cabinas y cerrarla con el closepopus genericos" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

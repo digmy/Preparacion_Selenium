@@ -14,6 +14,7 @@ import utils.ActionHelpers;
 import utils.Waits;
 
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import static java.lang.System.out;
@@ -56,6 +57,19 @@ public abstract class BasePage {
 
         out.println("Random element clicked.");
     }
+
+    //clickRandom para no seleccionar la primera opcion
+    public static void clickRandomElement(List<WebElement> elements) {
+        Random random = new Random();
+        if (elements == null || elements.size() < 2) return;
+
+        // índice random entre 1 y size-1
+        int index = random.nextInt(elements.size() - 1) + 1;
+
+        WebElement element = elements.get(index);
+        element.click();
+    }
+
 
     protected void clickNextRobust(){
         try{

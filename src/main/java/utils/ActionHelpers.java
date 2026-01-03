@@ -116,7 +116,7 @@ public class ActionHelpers {
     // Selección random de una lista de elementos ( <li>, <button>, <div>, etc.)
     public static void clickRandomElement(List<WebElement> elements) {
         if (elements == null || elements.isEmpty()) return;
-        WebElement element = elements.get(random.nextInt(elements.size()));
+        WebElement element = elements.get(random.nextInt(elements.size())-1);
         element.click();
     }
 
