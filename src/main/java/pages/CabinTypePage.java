@@ -15,94 +15,67 @@ import static java.lang.System.out;
 
 public class CabinTypePage extends BasePage {
 
-    private final By selectCabinButton = By.cssSelector("button[automation-id^='cabin-type-selection-button-']");
+    // CTA puede ser button o span (preseleccionado)
+    private final By cabinTypeButton = By.cssSelector("button[automation-id^='cabin-type-selection-button-'], " +
+                    "span[automation-id^='cabin-type-selection-button-']"
+    );
 
-    private final By yatchSelector = By.cssSelector("div.cabin-type__content__name > div > span:nth-child(2)");
+    public CabinTypePage() { super(); }
 
-    //constructor Cabin
-    public CabinTypePage (){}
-
-    //implemento metodo abstracto de clase BasePage abstracta
     @Override
     public boolean isAt() {
-        return !driver.findElements(selectCabinButton).isEmpty();
+        return !driver.findElements(cabinTypeButton).isEmpty();
     }
 
-    //selecciona cabina
-    public NextStep selectCabin(){
+    public NextStep selectCabin() {
+
+        out.println("I'm inside Cabin Type step (SKIP-LAST mode)");
 
         closeGenericPopup();
-
         Waits.waitUntilLoaderDisappear(CommonDOM.shipLoader);
 
         try {
+            List<WebElement> ctas = Waits.waitForVisibilityOfElements(cabinTypeButton);
+            Assert.assertFalse(ctas.isEmpty(), "ERROR: No cabin options found");
 
-            out.println("I'm inside selectCabin");
+            int size = ctas.size();
+            out.println(size + " cabin CTA(s) found");
 
-            //obtengo la lista de cabinas
-            List<WebElement> cabintList = Waits.waitForVisibilityOfElements(selectCabinButton);
-
-            Assert.assertFalse(ActionHelpers.isEmpty(cabintList), "ERROR: No cabin options found");
-
-            out.println(cabintList.size() + " cabin(s) found");
-
-            boolean isYatchSelected;
-
-            //solo una cabina disponible, clicca solo next
-            if (cabintList.size() == 1) {
-
-                out.println("Only one cabin available");
-
-                isYatchSelected = isYatchFromElement(cabintList.get(0));
-
-                closeGenericPopup();
-
-                jsClickByLocator(CommonDOM.nextButton);
-
-                return isYatchSelected ? NextStep.CABIN_POSITION : NextStep.EXPERIENCE;
+            // Si solo hay 1, ya está seleccionado normalmente → NEXT
+            if (size == 1) {
+                out.println("Only one cabin type available -> clicking NEXT");
+                clickNextRobust();
+                return NextStep.EXPERIENCE; // asumiendo no-yacht por regla negocio, si aquí puede ser yacht avísame
             }
 
-            //varias cabinas disponibles
-            int index = ActionHelpers.randomInt(0, cabintList.size() - 1);
+            //nunca seleccionar la última opción que casi siempre es yatch
+            int maxIndex = size - 2; // última excluida
+            int index = (maxIndex == 0) ? 0 : ActionHelpers.randomInt(0, maxIndex);
 
-            WebElement selectedButton = cabintList.get(index);
+            out.println("Selecting cabin index: " + index + " (last excluded: " + (size - 1) + ")");
 
-            out.println("Random cabin index selected:" + index);
+            WebElement chosen = ctas.get(index);
+            scrollToElementSmoothly(chosen);
 
-            scrollToElementSmoothly(selectedButton);
+            // Click solo si es button y no está checked
+            String tag = chosen.getTagName().toLowerCase();
+            String clazz = chosen.getAttribute("class");
+            boolean alreadySelected = (clazz != null && clazz.contains("checked")) || "span".equals(tag);
 
-            clickWithActions(selectedButton);
+            if ("button".equals(tag) && !alreadySelected) {
+                clickWithActions(chosen);
+                out.println("Cabin clicked");
+            } else {
+                out.println("Cabin already selected (span/checked) -> skipping click");
+            }
 
-            isYatchSelected = isYatchFromElement(selectedButton);
-
-            out.println("Is Yatch selected?" + isYatchSelected);
-
-            closeGenericPopup();
-
-            jsClickByLocator(CommonDOM.nextButton);
-
-            return isYatchSelected ? NextStep.CABIN_POSITION : NextStep.EXPERIENCE;
-
-
-
-        }catch (Exception e){
-
-            out.println("ERROR: No cabin found -" + e.getMessage());
-
-            Assert.fail("Cabin selection failed:" + e.getMessage());
-
+            clickNextRobust();
             return NextStep.EXPERIENCE;
-        }
 
-    }
-
-    private boolean isYatchFromElement (WebElement cabinElement){
-        try{
-            List<WebElement> yatchLabels = cabinElement.findElements(yatchSelector);
-
-            return yatchLabels.stream().map(e->e.getText().toLowerCase()).anyMatch(text->text.contains("yacht")||text.contains("yatch"));
-        }catch(Exception e){
-            return false;
+        } catch (Exception e) {
+            out.println("ERROR: Cabin selection failed - " + e.getMessage());
+            Assert.fail("Cabin selection failed: " + e.getMessage());
+            return NextStep.EXPERIENCE;
         }
     }
 }

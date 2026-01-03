@@ -57,6 +57,21 @@ public abstract class BasePage {
         out.println("Random element clicked.");
     }
 
+    protected void clickNextRobust(){
+        try{
+            // Siempre: cerrar popups y esperar loader antes de NEXT
+            closeGenericPopup();
+            Waits.waitUntilLoaderDisappear(CommonDOM.shipLoader);
+
+            WebElement next = Waits.waitForClickableByLocator(CommonDOM.nextButton);
+            scrollToElement(next);
+            clickWithActions(next);
+            logger.info("Clicked NEXT button");
+        } catch(Exception e){
+            logger.info("NEXT normal click failed, try JS click");
+            jsClickByLocator(CommonDOM.nextButton);
+        }
+    }
     //============Actions metodos=============
 
     //click con Actions
@@ -195,6 +210,14 @@ public abstract class BasePage {
         }
         out.println("Preselected (SPAN) → skipping click");
         return false;
+    }
+
+    public boolean isPresent(By locator){
+        return !driver.findElements(locator).isEmpty();
+    }
+
+    public boolean isVisible(By locator){
+        return driver.findElement(locator).isDisplayed() && isPresent(locator);
     }
 }
 /*en POM los atributos en la clase basepage no pueden ser static por consecutividad ningun metodo que los

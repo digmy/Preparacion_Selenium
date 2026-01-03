@@ -15,9 +15,6 @@ public class HomePage extends BasePage {
     public final By destinationDropdown = By.cssSelector("div[automation-id*='search-destination']");
     public final By destinationEnables = By.cssSelector("div[automation-id^='checklist-item']");
 
-    //opciones
-    public final By selectOptions = By.cssSelector(".dropdown__container");
-
     //partenza
     public final By departureDropdown = By.cssSelector("div[automation-id*='search-departures']");
     public final By departureEnables = By.cssSelector("div.checklist.dropdown__body div.checkbox-label.checklist-item__label.checkbox-label--enabled");
@@ -25,7 +22,6 @@ public class HomePage extends BasePage {
     //date
     public final By dateDropdown = By.cssSelector("div[automation-id*='search-dates']");
     public final By calendarMonthDropdown = By.cssSelector("span[automation-id^='datepicker-month-']");
-    public final By calendarDropdown = By.cssSelector("div.vdp-datepicker__calendar--columns-months");
 
     //quicksearch
     public final By searchButton = By.cssSelector("div[automation-id='search-button']");
@@ -41,7 +37,9 @@ public class HomePage extends BasePage {
 
     //FYI
     public SearchPage fullSearchFlow() {
+
         out.println("I'm inside FYI");
+
         closeGenericPopup();
         Waits.waitUntilLoaderDisappear(CommonDOM.shipLoader);
 
@@ -54,20 +52,26 @@ public class HomePage extends BasePage {
             return quickSearch();
 
         } catch (Exception ex) {
-            out.println("ERROR CRITIC: Cannot be possible execute QuickSearch neither.");
-            Assert.fail("Cannot be possible execute the search");
-        }
+            out.println("ERROR CRITIC: Cannot execute QuickSearch.");
+            Assert.fail("Cannot execute the search: " + ex.getMessage());
 
-        out.println(" ENDED FULL SEARCH FLOW");
-        return new SearchPage();
+            // Esto hace que el compilador entienda que no se continúa
+            throw new RuntimeException("Search flow failed", ex);
+        }
     }
 
     // método para búsqueda rápida
-    public SearchPage quickSearch (){
-        out.println("Clicking search button");
-        WebElement searchBut = Waits.waitForClickableByLocator(searchButton);
-        clickWithActions(searchBut);
-        return new SearchPage();
+    public SearchPage quickSearch() {
+        try {
+            out.println("Clicking search button");
+            WebElement searchBut = Waits.waitForClickableByLocator(searchButton);
+            clickWithActions(searchBut);
+            return new SearchPage();
+        } catch (Exception e) {
+            Assert.fail("QuickSearch failed: " + e.getMessage());
+
+            throw new RuntimeException("QuickSearch failed", e);
+        }
     }
 
     //método que permite seleccionar random un destino

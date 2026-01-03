@@ -5,6 +5,8 @@ import dom.CommonDOM;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+import utils.ActionHelpers;
+import utils.NextStep;
 import utils.Waits;
 
 import java.util.List;
@@ -31,7 +33,11 @@ public class OffersPage extends BasePage {
     private final By vcButton = By.cssSelector("button[automation-id='msc-voyagers-club-member-button']");
 
     //boton para seleccionar la oferta
-    private final By selectOfferButton = By.cssSelector("button[automation-id^='price-type-selection-button-']");
+    private final By selectOfferButton = By.cssSelector("button[automation-id^='price-type-selection-button-']," +
+            "span[automation-id^='price-type-selection-button-']");
+
+    // Estado preseleccionado típico cuando es 1 sola: span.button.checked (opcional si lo quieres)
+    private final By preselectedCTA = By.cssSelector("span.button.checked[automation-id^='price-type-selection-button-']");
 
     //constructor Offers
     public OffersPage (){}
@@ -43,7 +49,9 @@ public class OffersPage extends BasePage {
     }
 
     //selecciona oferta
-    public CabinTypePage selectOffer() {
+    public NextStep selectOffer() {
+
+        out.println("I'm inside Offers step");
 
         closeGenericPopup();
         Waits.waitUntilLoaderDisappear(CommonDOM.shipLoader);
@@ -51,57 +59,41 @@ public class OffersPage extends BasePage {
         try {
             out.println("I'm inside selectOffer");
 
-            List<WebElement> offers = Waits.waitForVisibilityOfElements(selectOfferButton);
-            Assert.assertFalse(offers.isEmpty(), "ERROR: No offers found");
+            List<WebElement> offersCtasList = Waits.waitForVisibilityOfElements(selectOfferButton);
+            Assert.assertFalse(offersCtasList.isEmpty(), "ERROR: No offers found");
 
-            if (offers.size() == 1) {
-                out.println("Only one offer available");
+            //Elegir CTA: si hay 1, ese; si hay varios, random
+            WebElement cta = (offersCtasList.size() == 1)
+                    ? offersCtasList.get(0)
+                    : offersCtasList.get(ActionHelpers.randomInt(0, offersCtasList.size() - 1));
 
-                WebElement onlyOffer = offers.get(0);
-                scrollToElementSmoothly(onlyOffer);
+            scrollToElementSmoothly(cta);
 
-                // Intentar click (no obligatorio si ya está preseleccionada)
-                try {
-                    clickWithActions(onlyOffer);
-                    out.println("Offer clicked (single option)");
-                } catch (Exception e) {
-                    out.println("Offer click skipped (probably preselected or intercepted)");
-                }
+            //Lógica button/span + checked
+            String tag = cta.getTagName().toLowerCase();
+            String clazz = cta.getAttribute("class");
+            boolean alreadySelected = (clazz != null && clazz.contains("checked"));
 
+            if ("button".equals(tag) && !alreadySelected) {
+                clickWithActions(cta);
+                out.println("CTA clicked (button)");
             } else {
-                out.println("Multiple offers available: " + offers.size());
-
-                // Selección aleatoria usando tu helper
-                clickRandom(selectOfferButton);
-                out.println("Random offer selected");
+                out.println("CTA preseleccionado (span.checked o ya checked) -> no clickeo");
+                // opcional: validar que efectivamente hay preselected
+                // Assert.assertFalse(card.findElements(preselectedCTA).isEmpty(), "No preselected CTA found");
             }
 
-            // Siempre: cerrar popups y esperar loader antes de NEXT
-            closeGenericPopup();
-            Waits.waitUntilLoaderDisappear(CommonDOM.shipLoader);
-
-            // NEXT (más robusto: intenta normal → actions → JS)
             clickNextRobust();
 
-            // Validación mínima opcional (si tienes locator de la CabinTypePage, mejor)
-            return new CabinTypePage();
+            return NextStep.CABIN_TYPE;
+        } catch (Exception e) {
+            out.println("ERROR: No offers found -" + e.getMessage());
 
-        } catch (Exception e) {
-            out.println("ERROR: Offer selection failed - " + e.getMessage());
-            Assert.fail("Offer selection failed: " + e.getMessage());
-            return null;
+            Assert.fail("Offers selection failed:" + e.getMessage());
+
+            return NextStep.CABIN_TYPE;
         }
-    }
-    private void clickNextRobust() {
-        try {
-            WebElement next = Waits.waitForClickableByLocator(CommonDOM.nextButton);
-            scrollToElementSmoothly(next);
-            clickWithActions(next);
-            out.println("Clicked NEXT with Actions");
-        } catch (Exception e) {
-            out.println("Actions click failed, trying JS NEXT");
-            jsClickByLocator(CommonDOM.nextButton);
-        }
+
     }
 
 }

@@ -91,7 +91,9 @@ public class SearchPage extends BasePage {
 
         } catch (Exception e) {
             out.println("ERROR selecting cruise: " + e.getMessage());
-            Assert.fail("Fatal error during cruise selection");
+            Assert.fail("Fatal error during cruise selection: " + e.getMessage());
+
+            throw new RuntimeException("Cruise selection failed", e);
         }
     }
 }

@@ -1,36 +1,31 @@
 package utils;
 
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 public class ConfigReader {
 
-    //static: “acceso global simple”
     private static final Properties props = new Properties();
 
-    // static: se carga una sola vez
     static {
-        try (FileInputStream fis = new FileInputStream("src/test/resources/config.properties")) {
-            props.load(fis);
-        } catch (IOException e) {
+        try (InputStream is = ConfigReader.class.getClassLoader().getResourceAsStream("config.properties")) {
+
+            if (is == null) {
+                throw new RuntimeException("config.properties not found in classpath (src/main/resources or src/test/resources)");
+            }
+
+            props.load(is);
+
+        } catch (Exception e) {
             throw new RuntimeException("No se pudo leer config.properties", e);
         }
     }
 
-    // private constructor: no quiero que instancien esta clase (utilitaria)
-    private ConfigReader() {}
-
-    //static: “acceso global simple”
     public static String get(String key) {
         String value = props.getProperty(key);
         if (value == null) {
-            throw new RuntimeException("Falta la key en config.properties: " + key);
+            throw new RuntimeException("Missing key in config.properties: " + key);
         }
         return value.trim();
     }
 }
-
-/**
- *
- */

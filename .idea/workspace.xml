@@ -4,16 +4,26 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5b80042d-7369-48cb-815e-26be9e13ae53" name="Changes" comment="segunda pasada 02012026">
-      <change afterPath="$PROJECT_DIR$/src/main/java/pages/CabinTypePage.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pages/ExperiencePage.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pages/HomePage.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pages/OffersPage.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/utils/NextStep.java" afterDir="false" />
+    <list default="true" id="5b80042d-7369-48cb-815e-26be9e13ae53" name="Changes" comment="tercera pasada 03012026">
+      <change afterPath="$PROJECT_DIR$/src/main/java/controller/BookingFlow.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pages/CabinNumberPage.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pages/CabinPositionPage.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pages/CheckoutPage.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pages/InsurancePage.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pages/OffersPackagePage.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pages/PassengerFormPage.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/BookingFlowTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/core/BasePage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/core/BasePage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pages/CabinTypePage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pages/CabinTypePage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pages/ExperiencePage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pages/ExperiencePage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pages/HomePage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pages/HomePage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pages/OffersPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pages/OffersPage.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pages/SearchPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pages/SearchPage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/SearchTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utils/ActionHelpers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/ActionHelpers.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utils/ConfigReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/ConfigReader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utils/NextStep.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/NextStep.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/baseTest/BaseTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/baseTest/BaseTests.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,6 +55,7 @@
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "TestNG.BookingFlowTest.executor": "Run",
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
     "onboarding.tips.debug.path": "C:/Users/digmy/PROJECTS/Preparacion_Selenium/src/main/java/Automation/Main.java"
@@ -52,6 +63,9 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\digmy\PROJECTS\Preparacion_Selenium\src\main\resources" />
+      <recent name="C:\Users\digmy\PROJECTS\Preparacion_Selenium\src\test\java\resources" />
+      <recent name="C:\Users\digmy\PROJECTS\Preparacion_Selenium\src\test\java" />
       <recent name="C:\Users\digmy\PROJECTS\Preparacion_Selenium" />
     </key>
   </component>
@@ -120,7 +134,15 @@
       <option name="project" value="LOCAL" />
       <updated>1767391871043</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="tercera pasada 03012026">
+      <option name="closed" value="true" />
+      <created>1767452294300</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1767452294300</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -137,7 +159,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="primera pasada 31122025" />
     <MESSAGE value="segunda pasada 02012026" />
-    <option name="LAST_COMMIT_MESSAGE" value="segunda pasada 02012026" />
+    <MESSAGE value="tercera pasada 03012026" />
+    <option name="LAST_COMMIT_MESSAGE" value="tercera pasada 03012026" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
