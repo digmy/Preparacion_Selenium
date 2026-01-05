@@ -58,34 +58,44 @@ public abstract class BasePage {
         out.println("Random element clicked.");
     }
 
-    //clickRandom para no seleccionar la primera opcion
-    public static void clickRandomElement(List<WebElement> elements) {
-        Random random = new Random();
-        if (elements == null || elements.size() < 2) return;
+    public void clickNextRobust() {
 
-        // índice random entre 1 y size-1
-        int index = random.nextInt(elements.size() - 1) + 1;
+        // En este funnel, popups pueden salir antes o después de seleccionar algo
+        closeGenericPopup();
+        Waits.waitUntilLoaderDisappear(CommonDOM.shipLoader);
 
-        WebElement element = elements.get(index);
-        element.click();
-    }
+        WebElement next = Waits.waitForVisibility(CommonDOM.nextButton);
 
+        scrollToElementSmoothly(next);
 
-    protected void clickNextRobust(){
-        try{
-            // Siempre: cerrar popups y esperar loader antes de NEXT
-            closeGenericPopup();
-            Waits.waitUntilLoaderDisappear(CommonDOM.shipLoader);
+        // Reintento simple 2 veces
+        for (int i = 0; i < 2; i++) {
+            try {
+                closeGenericPopup();
+                Waits.waitUntilLoaderDisappear(CommonDOM.shipLoader);
 
-            WebElement next = Waits.waitForClickableByLocator(CommonDOM.nextButton);
-            scrollToElement(next);
-            clickWithActions(next);
-            logger.info("Clicked NEXT button");
-        } catch(Exception e){
-            logger.info("NEXT normal click failed, try JS click");
-            jsClickByLocator(CommonDOM.nextButton);
+                // si tu Waits tiene waitForClickableByLocator mejor:
+                next = Waits.waitForClickableByLocator(CommonDOM.nextButton);
+
+                clickByElement(next);
+                return;
+
+            } catch (Exception e) {
+                // fallback: JS click (muy útil en sticky footer)
+                try {
+                    next = driver.findElement(CommonDOM.nextButton);
+                    jsClickByElement(next);
+                    return;
+                } catch (Exception ignored) { }
+
+                // pequeña pausa y reintenta
+                try { Thread.sleep(300); } catch (InterruptedException ignored) {}
+            }
         }
+
+        Assert.fail("NEXT click failed after retries");
     }
+
     //============Actions metodos=============
 
     //click con Actions
@@ -199,28 +209,54 @@ public abstract class BasePage {
 
     public boolean clickIfButton(WebElement element) {
         String tag = element.getTagName();
+        String clazz = element.getAttribute("class");
+
+        boolean alreadySelected = clazz != null && clazz.contains("checked");
+        if (alreadySelected) {
+            out.println("Already selected (checked) -> skipping click");
+            return false;
+        }
+
         if ("button".equalsIgnoreCase(tag)) {
             try {
                 clickWithActions(element);
                 out.println("Clicked (BUTTON)");
                 return true;
             } catch (Exception e) {
-                out.println("Click failed on BUTTON → trying JS");
+                out.println("Click failed on BUTTON -> trying JS");
                 jsClickByElement(element);
                 return true;
             }
         }
-        out.println("Preselected (SPAN) → skipping click");
+
+        out.println("Preselected (SPAN) -> skipping click");
         return false;
     }
+
 
     public boolean isPresent(By locator){
         return !driver.findElements(locator).isEmpty();
     }
 
     public boolean isVisible(By locator){
-        return driver.findElement(locator).isDisplayed() && isPresent(locator);
+        try {
+            return isPresent(locator) && driver.findElement(locator).isDisplayed();
+        } catch (Exception e) {
+            return false;
+        }
     }
+
+
+    protected boolean isNextEnabled() {
+        try {
+            // mejor pedirlo visible primero para evitar false por timing
+            WebElement next = Waits.waitForVisibility(CommonDOM.nextButton);
+            return next.isDisplayed() && next.isEnabled();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
 }
 /*en POM los atributos en la clase basepage no pueden ser static por consecutividad ningun metodo que los
  utilice debe llevar static... un static no puede inicializarse en un constructor*/

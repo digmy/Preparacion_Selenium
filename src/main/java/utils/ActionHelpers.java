@@ -111,12 +111,35 @@ public class ActionHelpers {
         return random.nextInt((max - min) + 1) + min;
     }
 
+    // Indices random excluyendo el ultimo
+    public static int randomIndexExcludingLast(int size) {
+        if (size <= 1) return 0;
+        return randomInt(0, size - 2);
+    }
+
+    //indice random sin repetir intentos
+    public static int randomIndexExcludingLastAndTried(int size, List<Integer> triedIndexes) {
+        int maxIndex = size - 2;
+        if (maxIndex <= 0) return 0;
+
+        int index;
+        int guard = 0;
+
+        do {
+            index = randomInt(0, maxIndex);
+            guard++;
+        } while (triedIndexes.contains(index) && guard < 10);
+
+        return index;
+    }
+
+
     // ============Random Dropdowns / Listas============
 
     // Selección random de una lista de elementos ( <li>, <button>, <div>, etc.)
     public static void clickRandomElement(List<WebElement> elements) {
         if (elements == null || elements.isEmpty()) return;
-        WebElement element = elements.get(random.nextInt(elements.size())-1);
+        WebElement element = elements.get(random.nextInt(elements.size()));
         element.click();
     }
 
@@ -138,6 +161,20 @@ public class ActionHelpers {
     public static boolean isEmpty(List<WebElement> elements){
         return elements == null || elements.isEmpty();
     }
+
+    // random normal
+    public static void clickNormalRandomElement(List<WebElement> elements) {
+        if (elements == null || elements.isEmpty()) return;
+        elements.get(random.nextInt(elements.size())).click();
+    }
+
+    // random pero saltando el index 0
+    public static void clickRandomElementSkipFirst(List<WebElement> elements) {
+        if (elements == null || elements.size() < 2) return;
+        int index = random.nextInt(elements.size() - 1) + 1;
+        elements.get(index).click();
+    }
+
 
 
 }
