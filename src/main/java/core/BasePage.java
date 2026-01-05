@@ -195,18 +195,6 @@ public abstract class BasePage {
         }
     }
 
-    public boolean verifyCabinNumber(By locator) {
-
-        try {
-            out.println("Searching Cabin Type section");
-            WebElement cabinNumberPage = Waits.waitForVisibility(locator);
-            return cabinNumberPage.isDisplayed();
-        } catch (Exception e) {
-            out.println("Cabin Type section was not found");
-            return false;
-        }
-    }
-
     //------------Verificas--------------
 
     public boolean clickIfButton(WebElement element) {

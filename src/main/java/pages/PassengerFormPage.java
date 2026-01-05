@@ -31,7 +31,7 @@ public class PassengerFormPage extends BasePage {
     private final By lastamePassenger2 = By.cssSelector("#LastName_2_1"); //nombre del pasajero 2
     private final By birthDayPassenger2 = By.cssSelector("#DateOfBirth_2_1"); //fecha de nacimiento del pasajero 2
     private final By genderPassenger2 = By.cssSelector("#Gender_2_1"); //sexo del pasajero 2
-    private final By countryPassenger2 = By.cssSelector("#CountryOfResidence_2_1");//nombre del pasajero 2
+    private final By countryPassenger2 = By.cssSelector("#CountryOfResidence_2_1");//pais del pasajero 2
 
     private final By documentPassenger1Dropdown = By.cssSelector("#DocumentType_1_1"); //dropdown para seleccionar el tipo de documento del pasajero 1
     private final By documentPassenger2Dropdown = By.cssSelector("#DocumentType_2_1"); //dropdown para seleccionar el tipo de documento del pasajero 2

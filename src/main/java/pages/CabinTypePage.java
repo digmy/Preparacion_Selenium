@@ -7,9 +7,9 @@ import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import utils.ActionHelpers;
 import utils.NextStep;
-import utils.Waits;
 
-import java.util.List;
+
+import utils.Waits;import java.util.List;
 
 import static java.lang.System.out;
 
