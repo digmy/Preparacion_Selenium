@@ -3,15 +3,11 @@ package pages;
 import core.BasePage;
 import dom.CommonDOM;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import utils.ActionHelpers;
 import utils.NextStep;
 import utils.PassengerType;
 import utils.Waits;
-
-import java.util.List;
 
 import static java.lang.System.out;
 
@@ -20,8 +16,8 @@ public class PassengerFormPage extends BasePage {
     private final By firstNamePassenger1 = By.cssSelector("#FirstName_1_1"); //nombre del pasajero 1
     private final By lastamePassenger1 = By.cssSelector("#LastName_1_1"); //nombre del pasajero 1
     private final By birthDayPassenger1 = By.cssSelector("#DateOfBirth_1_1"); //fecha de nacimiento del pasajero 1
-    private final By genderPassenger1 = By.cssSelector("#Gender_1_1"); //sexo del pasajero 1
-    private final By countryPassenger1 = By.cssSelector("#CountryOfResidence_1_1");//nombre del pasajero 1
+    private final By genderPassenger1 = By.cssSelector("#Gender_1_1 select"); //sexo del pasajero 1
+    private final By countryPassenger1 = By.cssSelector("#CountryOfResidence_1_1 select");//nombre del pasajero 1
 
     private final By email = By.cssSelector("#Email__1_1");
     private final By confirmEmail = By.cssSelector("#ConfirmEmail_1_1");
@@ -30,11 +26,11 @@ public class PassengerFormPage extends BasePage {
     private final By firstNamePassenger2 = By.cssSelector("#FirstName_2_1"); //nombre del pasajero 2
     private final By lastamePassenger2 = By.cssSelector("#LastName_2_1"); //nombre del pasajero 2
     private final By birthDayPassenger2 = By.cssSelector("#DateOfBirth_2_1"); //fecha de nacimiento del pasajero 2
-    private final By genderPassenger2 = By.cssSelector("#Gender_2_1"); //sexo del pasajero 2
-    private final By countryPassenger2 = By.cssSelector("#CountryOfResidence_2_1");//pais del pasajero 2
+    private final By genderPassenger2 = By.cssSelector("#Gender_2_1 select"); //sexo del pasajero 2
+    private final By countryPassenger2 = By.cssSelector("#CountryOfResidence_2_1 select");//pais del pasajero 2
 
-    private final By documentPassenger1Dropdown = By.cssSelector("#DocumentType_1_1"); //dropdown para seleccionar el tipo de documento del pasajero 1
-    private final By documentPassenger2Dropdown = By.cssSelector("#DocumentType_2_1"); //dropdown para seleccionar el tipo de documento del pasajero 2
+    private final By documentPassenger1Dropdown = By.cssSelector("#DocumentType_1_1 select"); //dropdown para seleccionar el tipo de documento del pasajero 1
+    private final By documentPassenger2Dropdown = By.cssSelector("#DocumentType_2_1 select"); //dropdown para seleccionar el tipo de documento del pasajero 2
     private final By ciNumberPassenger1 = By.cssSelector("#DocumentNumber_1_1"); //input para inserir el número de carta de identidad del pasajero 1
     private final By ciNumberPassenger2 = By.cssSelector("#DocumentNumber_2_1"); //input para inserir el número de carta de identidad del pasajero 2
     private final By ciExpiryDatePassenger1 = By.cssSelector("#DateOfExpiry_1_1"); //input para inserir la fecha de vencimiento de carta de identidad del pasajero 1
@@ -85,8 +81,7 @@ public class PassengerFormPage extends BasePage {
         type(lastamePassenger1, ActionHelpers.fakeLastName());
         type(birthDayPassenger1, ActionHelpers.generateBirthday(PassengerType.ADULT));
 
-        clickRandom(genderPassenger1);
-        clickRandom(countryPassenger1);
+        selectFirstAvailableOption(genderPassenger1);
 
         type(email, bookingEmail);
         type(confirmEmail, bookingEmail);
@@ -100,8 +95,9 @@ public class PassengerFormPage extends BasePage {
         type(lastamePassenger2, ActionHelpers.fakeLastName());
         type(birthDayPassenger2, ActionHelpers.generateBirthday(PassengerType.ADULT));
 
-        clickRandom(genderPassenger2);
-        clickRandom(countryPassenger2);
+        selectFirstAvailableOption(genderPassenger2);
+
+        selectFirstAvailableOption(countryPassenger2);
 
     }
 
@@ -151,18 +147,7 @@ public class PassengerFormPage extends BasePage {
 
         Waits.waitUntilLoaderDisappear(CommonDOM.shipLoader);
 
-        WebElement selectEl = Waits.waitForVisibility(documentDropdown);
-        Select select = new Select(selectEl);
-
-        List<WebElement> options = select.getOptions();
-
-        Assert.assertTrue(options.size() >= 2, "Not enough document options available");
-
-        int index = ActionHelpers.randomInt(1, options.size() - 1);
-
-        out.println("Document selected: " + options.get(index).getText());
-
-        select.selectByIndex(index);
+        selectFirstAvailableOption(documentDropdown);
 
         type(docNumber, ActionHelpers.randomString(7));
         type(docExpiry, ActionHelpers.futureDate());

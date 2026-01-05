@@ -22,9 +22,14 @@ public class ExperiencePage extends BasePage {
 
     private final By experienceCard = By.cssSelector("[automation-id^='cabin-experience-section-']");
 
-    //detecta el badge “selezionato” dentro del card
-    private final By selectedBadge = By.cssSelector(".checked, [class*='checked'], [class*='selected'], [class*='selezionato']");
+    // CTA marcado como seleccionado (suele ser span.button.checked o button.checked)
+    private final By selectedCtaInsideCard = By.cssSelector(
+            "span.button.checked[automation-id^='cabin-experience-selection-button-'], " +
+                    "button.checked[automation-id^='cabin-experience-selection-button-'], " +
+                    "button.button.checked[automation-id^='cabin-experience-selection-button-']"
+    );
 
+    // Locator para detectar Passenger
     private final By firstNamePassenger1 = By.cssSelector("#FirstName_1_1");
 
     public ExperiencePage() {}
@@ -47,14 +52,14 @@ public class ExperiencePage extends BasePage {
             List<WebElement> cards = Waits.waitForVisibilityOfElements(experienceCard);
             Assert.assertFalse(cards.isEmpty(), "ERROR: No experience cards found");
 
-            //elegir card (si hay 1, esa; si hay varias, random)
+            // elegir card (si hay 1, esa; si hay varias, random)
             WebElement card = (cards.size() == 1)
                     ? cards.get(0)
                     : cards.get(ActionHelpers.randomInt(0, cards.size() - 1));
 
             scrollToElementSmoothly(card);
 
-            //Seleccionar CTA dentro de la card
+            // CTA dentro de la card elegida
             List<WebElement> ctas = card.findElements(experienceButton);
             Assert.assertFalse(ctas.isEmpty(), "ERROR: No experience CTA found inside card");
 
@@ -64,27 +69,22 @@ public class ExperiencePage extends BasePage {
 
             scrollToElementSmoothly(cta);
 
-            clickIfButton(cta); //usa tu método BasePage (button->click / span->skip)
+            // click solo si es button y no está checked (tu método ya lo hace)
+            clickIfButton(cta);
 
-            //Ahora leemos cuál experiencia está seleccionada de verdad
+            // Detectar experiencia REAL seleccionada (sin caer en "bella+")
             String selectedExperience = getSelectedExperienceName(cards);
-
             out.println("Selected experience detected: " + selectedExperience);
 
             clickNextRobust();
 
-            boolean isBella = selectedExperience.contains("bella");
-
-            if (isBella) {
-                //Bella suele ir a Passenger
-                if (!verifyPassengerSection(firstNamePassenger1)) {
-                    out.println("Bella selected but Passenger not reached -> clicking NEXT again");
-                    clickNextRobust();
-                }
+            // NO asumir que bella siempre va a Passenger. Si Passenger está visible => PASSENGER_FORM; si no => CABIN_POSITION
+            if (isVisible(firstNamePassenger1)) {
+                out.println("Passenger form detected after NEXT");
                 return NextStep.PASSENGER_FORM;
             }
 
-            //no-bella => cabin position
+            out.println("Passenger form NOT detected -> going to Cabin Position");
             return NextStep.CABIN_POSITION;
 
         } catch (Exception e) {
@@ -94,26 +94,50 @@ public class ExperiencePage extends BasePage {
         }
     }
 
-    //Busca el card que está seleccionado (checked/selezionato) y devuelve su texto de forma segura.
+    // Encuentra el card seleccionado y extrae el nombre EXACTO (bella/fantastica/aurea)
     private String getSelectedExperienceName(List<WebElement> cards) {
 
-        // primero: intentar encontrar el seleccionado por clases/badge
+        WebElement selectedCard = null;
+
+        // 1) Preferencia: card que tenga un CTA checked dentro
         for (WebElement c : cards) {
-            String text = c.getText().toLowerCase();
-
-            // criterio simple: si el card tiene la palabra "selezionato"
-            // (en tu log aparece literal)
-            if (text.contains("selezionato")) {
-
-                if (text.contains("bella")) return "bella";
-                if (text.contains("fantastica")) return "fantastica";
-                if (text.contains("aurea")) return "aurea";
-
-                return text; // fallback
+            if (!c.findElements(selectedCtaInsideCard).isEmpty()) {
+                selectedCard = c;
+                break;
             }
         }
 
-        //si ninguno tiene “selezionato”, fallback: devuelve el texto del primer card
-        return cards.get(0).getText().toLowerCase();
+        //Fallback: card que contenga "selezionato" en su texto (pero ojo: NO leer bella por contains)
+        if (selectedCard == null) {
+            for (WebElement c : cards) {
+                String txt = c.getText().toLowerCase();
+                if (txt.contains("selezionato")) {
+                    selectedCard = c;
+                    break;
+                }
+            }
+        }
+
+        // 3) Último fallback: primer card
+        if (selectedCard == null) {
+            selectedCard = cards.get(0);
+        }
+
+        String text = selectedCard.getText().toLowerCase();
+
+        //Heurística simple y buena: el nombre suele venir como línea sola
+        for (String line : text.split("\\R")) {
+            String l = line.trim();
+            if (l.equals("bella")) return "bella";
+            if (l.equals("fantastica")) return "fantastica";
+            if (l.equals("aurea")) return "aurea";
+        }
+
+        // fallback suave
+        if (text.contains("fantastica")) return "fantastica";
+        if (text.contains("aurea")) return "aurea";
+        if (text.contains("bella")) return "bella";
+
+        return text;
     }
 }

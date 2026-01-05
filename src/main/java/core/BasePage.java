@@ -9,6 +9,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import utils.ActionHelpers;
 import utils.Waits;
@@ -193,6 +194,7 @@ public abstract class BasePage {
         }
     }
 
+    //=============Verificas=======================
     public boolean verifyPassengerSection(By locator) {
 
         try {
@@ -256,6 +258,29 @@ public abstract class BasePage {
             return false;
         }
     }
+
+    protected void selectFirstAvailableOption(By selectLocator) {
+
+        WebElement selectEl = Waits.waitForVisibility(selectLocator);
+        Select select = new Select(selectEl);
+
+        String selected = select.getFirstSelectedOption().getText().toLowerCase();
+
+        // Si ya está seleccionado (no "Selezionare") no hacemos nada
+        if (!selected.contains("selezionare")) {
+            out.println("Select already has value -> skipping");
+            return;
+        }
+
+        List<WebElement> options = select.getOptions();
+        Assert.assertTrue(options.size() > 1, "No selectable options found");
+
+        // opción 1 = primera válida (saltamos "Selezionare")
+        select.selectByIndex(1);
+
+        out.println("Selected option -> " + options.get(1).getText());
+    }
+
 
 }
 /*en POM los atributos en la clase basepage no pueden ser static por consecutividad ningun metodo que los
