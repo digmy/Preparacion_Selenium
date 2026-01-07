@@ -15,7 +15,6 @@ import utils.ActionHelpers;
 import utils.Waits;
 
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 import static java.lang.System.out;
@@ -32,9 +31,6 @@ public abstract class BasePage {
         this.actions = new Actions(driver);
     }
 
-    //============Verifica que existe la pàgina==============
-    public abstract boolean isAt();//se comporta distinto en cada pàgina
-
     //==============Clicks===========
 
     //click por elemento
@@ -43,54 +39,36 @@ public abstract class BasePage {
         Waits.waitForClickableByElement(element).click();
     }
 
-    //click random
-    protected void clickRandom(By locator) {
-        List<WebElement> list = Waits.waitForVisibilityOfElements(locator);
-        Assert.assertFalse(list.isEmpty(), "ERROR: No elements to click randomly");
-        WebElement randomElement = list.get(ActionHelpers.randomInt(0, list.size() - 1));
-        scrollToElement(randomElement);
-
-        try {
-            clickByElement(randomElement);
-        } catch (Exception e) {
-            jsClickByElement(randomElement);
-        }
-
-        out.println("Random element clicked.");
-    }
-
     public void clickNextRobust() {
 
-        // En este funnel, popups pueden salir antes o después de seleccionar algo
-        closeGenericPopup();
-        Waits.waitUntilLoaderDisappear(CommonDOM.shipLoader);
-
-        WebElement next = Waits.waitForVisibility(CommonDOM.nextButton);
-
-        scrollToElementSmoothly(next);
-
-        // Reintento simple 2 veces
-        for (int i = 0; i < 2; i++) {
+        // Reintento simple 3 veces
+        for (int i = 0; i < 3; i++) {
             try {
                 closeGenericPopup();
                 Waits.waitUntilLoaderDisappear(CommonDOM.shipLoader);
 
-                // si tu Waits tiene waitForClickableByLocator mejor:
-                next = Waits.waitForClickableByLocator(CommonDOM.nextButton);
+                List<WebElement> nexts = driver.findElements(CommonDOM.nextButton);
+                Assert.assertFalse(nexts.isEmpty(), "NEXT button not found in DOM");
 
-                clickByElement(next);
-                return;
+                WebElement nextVisible = nexts.stream()
+                            .filter(WebElement::isDisplayed)
+                            .findFirst()
+                            .orElseThrow(() -> new RuntimeException("NEXT button found but none is displayed"));
+
+                scrollToElementSmoothly(nextVisible);
+                closeGenericPopup();
+
+                try {
+                    clickByElement(nextVisible);
+                } catch (Exception e) {
+                    jsClickByElement(nextVisible);
+                }
+
+                return; // si hizo click bien, salimos
 
             } catch (Exception e) {
-                // fallback: JS click (muy útil en sticky footer)
-                try {
-                    next = driver.findElement(CommonDOM.nextButton);
-                    jsClickByElement(next);
-                    return;
-                } catch (Exception ignored) { }
-
-                // pequeña pausa y reintenta
-                try { Thread.sleep(300); } catch (InterruptedException ignored) {}
+                // si falla, reintenta el loop
+                out.println("NEXT attempt " + (i + 1) + " failed: " + e.getMessage());
             }
         }
 
@@ -128,12 +106,6 @@ public abstract class BasePage {
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
     }
 
-    //click con JS (si falla el click normal) por localizador
-    protected void jsClickByLocator(By locator) {
-        WebElement element = Waits.waitForVisibility(locator);
-        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
-    }
-
     //click con JS (si falla el click normal) por elemento
     protected void jsClickByElement(WebElement element) {
         logger.warn("Click por JS fallback");
@@ -141,12 +113,10 @@ public abstract class BasePage {
         ((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
     }
 
-    //scroll lento
+    //===========scroll lento================
     public void scrollToElementSmoothly(WebElement element) {
         try {
-            ((JavascriptExecutor) driver).executeScript(
-                    "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", element
-            );
+            ((JavascriptExecutor) driver).executeScript( "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", element );
             Thread.sleep(300);
         } catch (Exception e) {
             out.println("Error scrolling to element: " + e.getMessage());
@@ -166,7 +136,7 @@ public abstract class BasePage {
         }
     }
 
-    //==========Selección genérica=========
+    //==========Selección =========
     protected void selectOptionFromDropdown(By dropdownLocator, By optionsLocator, String description) {
         try {
             closeGenericPopup();
@@ -180,7 +150,7 @@ public abstract class BasePage {
                     .contains("disable")).collect(Collectors.toList());
 
             if (enableOptions.isEmpty()) {
-                throw new AssertionError("Error: No departures available");
+                throw new AssertionError("Error: No options available");
             }
 
             int index = ActionHelpers.randomInt(0, enableOptions.size() - 1);
@@ -190,24 +160,33 @@ public abstract class BasePage {
             clickWithActions(selected);
 
         } catch (Exception e) {
-            out.println("ERROR selecting departure");
+            out.println("ERROR selecting");
         }
+    }
+
+    protected void selectFirstAvailableOption(By selectLocator) {
+
+        WebElement selectEl = Waits.waitForVisibility(selectLocator);
+        Select select = new Select(selectEl);
+
+        String selected = select.getFirstSelectedOption().getText().toLowerCase();
+
+        // Si ya está seleccionado (no "Selezionare") no hacemos nada
+        if (!selected.contains("selezionare")) {
+            out.println("Select already has value -> skipping");
+            return;
+        }
+
+        List<WebElement> options = select.getOptions();
+        Assert.assertTrue(options.size() > 1, "No selectable options found");
+
+        // opción 1 = primera válida (saltamos "Selezionare")
+        select.selectByIndex(1);
+
+        out.println("Selected option -> " + options.get(1).getText());
     }
 
     //=============Verificas=======================
-    public boolean verifyPassengerSection(By locator) {
-
-        try {
-            out.println("Searching Passenger section");
-            WebElement guestPage = Waits.waitForVisibility(locator);
-            return guestPage.isDisplayed();
-        } catch (Exception e) {
-            out.println("Passenger section was not found");
-            return false;
-        }
-    }
-
-    //------------Verificas--------------
 
     public boolean clickIfButton(WebElement element) {
         String tag = element.getTagName();
@@ -235,7 +214,6 @@ public abstract class BasePage {
         return false;
     }
 
-
     public boolean isPresent(By locator){
         return !driver.findElements(locator).isEmpty();
     }
@@ -248,38 +226,32 @@ public abstract class BasePage {
         }
     }
 
-
     protected boolean isNextEnabled() {
         try {
-            // mejor pedirlo visible primero para evitar false por timing
-            WebElement next = Waits.waitForVisibility(CommonDOM.nextButton);
-            return next.isDisplayed() && next.isEnabled();
+            List<WebElement> nexts = driver.findElements(CommonDOM.nextButton);
+            if (nexts.isEmpty()) return false;
+
+            WebElement nextVisible = nexts.stream()
+                    .filter(WebElement::isDisplayed)
+                    .findFirst()
+                    .orElse(null);
+
+            return nextVisible != null && nextVisible.isEnabled();
         } catch (Exception e) {
             return false;
         }
     }
 
-    protected void selectFirstAvailableOption(By selectLocator) {
-
-        WebElement selectEl = Waits.waitForVisibility(selectLocator);
-        Select select = new Select(selectEl);
-
-        String selected = select.getFirstSelectedOption().getText().toLowerCase();
-
-        // Si ya está seleccionado (no "Selezionare") no hacemos nada
-        if (!selected.contains("selezionare")) {
-            out.println("Select already has value -> skipping");
-            return;
+    protected void waitUntilNextEnabled() {
+        try {
+            Waits.waitUntil(this::isNextEnabled);
+        } catch (Exception ignored) {
+            out.println("NEXT did not become enabled within timeout");
         }
-
-        List<WebElement> options = select.getOptions();
-        Assert.assertTrue(options.size() > 1, "No selectable options found");
-
-        // opción 1 = primera válida (saltamos "Selezionare")
-        select.selectByIndex(1);
-
-        out.println("Selected option -> " + options.get(1).getText());
     }
+
+    //Verifica que existe la pàgina
+    public abstract boolean isAt();//se comporta distinto en cada pàgina
 
 
 }

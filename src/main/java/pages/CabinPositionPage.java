@@ -61,7 +61,7 @@ public class CabinPositionPage extends BasePage {
                 clickWithActions(cta);
                 out.println("CTA clicked (button)");
             } else {
-                out.println("CTA preseleccionado (span.checked o ya checked) -> no clickeo");
+                out.println("CTA preseleccionado (span.checked o ya checked), no clickeo");
                 // opcional: validar que efectivamente hay preselected
                 // Assert.assertFalse(card.findElements(preselectedCTA).isEmpty(), "No preselected CTA found");
             }

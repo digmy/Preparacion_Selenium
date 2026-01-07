@@ -10,6 +10,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.function.BooleanSupplier;
 
 import org.apache.logging.log4j.Logger;
 
@@ -30,6 +31,12 @@ public final class Waits {
         );
 
     }
+
+    // Waits.java
+    public static void waitUntil(BooleanSupplier condition) {
+        getWait().until(driver -> condition.getAsBoolean());
+    }
+
     //espera a que el elemento sea visible por localizador
     public static WebElement waitForVisibility(By locator){
         logger.info("Esperando visibilidad del elemento: " + locator);
@@ -46,12 +53,6 @@ public final class Waits {
     public static List<WebElement> waitForVisibilityOfElements(By locator){
         logger.info("Esperando visibilidad del elemento: " + locator);
         return getWait().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(locator));
-    }
-
-    //espera a que los elementos sean visibles por lista de elementos
-    public static List<WebElement> waitForVisibilityOfAll(WebElement element){
-        logger.info("Esperando visibilidad del elemento WebElement");
-        return getWait().until(ExpectedConditions.visibilityOfAllElements(element));
     }
 
     //espera a que el elemento por su localizador sea clickable

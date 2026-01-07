@@ -12,7 +12,7 @@ import static java.lang.System.out;
 public class HomePage extends BasePage {
 
     //destino
-    public final By destinationDropdown = By.cssSelector("div[automation-id*='search-destination']");
+    public final By destinationDropdown = By.cssSelector("div[automation-id^='search-destination']");
     public final By destinationEnables = By.cssSelector("div[automation-id^='checklist-item']");
 
     //partenza
@@ -76,20 +76,20 @@ public class HomePage extends BasePage {
 
     //método que permite seleccionar random un destino
     public void selectDestination (){
-        out.println("I'm inside selectDestination " + "Selecting: " + destinationDropdown);
+        out.println("I'm inside selectDestination ");
         selectOptionFromDropdown(destinationDropdown,destinationEnables,"destination");
 
     }
 
     //método que permite seleccionar random una fecha
     public void selectDepartureDate (){
-        out.println("I'm inside selectDate " + "Selecting: " + departureDropdown);
+        out.println("I'm inside selectDate ");
         selectOptionFromDropdown(dateDropdown,calendarMonthDropdown,"date");
     }
 
     //método que permite seleccionar random un lugar de partida
     public void selectDeparture () {
-        out.println("I'm inside selectDeparture " + "Selecting: " + departureDropdown);
+        out.println("I'm inside selectDeparture ");
         selectOptionFromDropdown(departureDropdown,departureEnables,"departure");
     }
 }

@@ -32,13 +32,13 @@ public class SearchPage extends BasePage {
         Waits.waitUntilLoaderDisappear(CommonDOM.shipLoader);
 
         try {
-            out.println("STEP 1: Loading cruise cards…");
+            out.println("Loading cruise cards…");
 
             // Esperar lista de cruceros
             List<WebElement> searchCruiseList = Waits.waitForVisibilityOfElements(cruiseList);
             Assert.assertFalse(searchCruiseList.isEmpty(), "ERROR: No cruise options found.");
 
-            out.println("STEP 2: " + searchCruiseList.size() + " cruises found");
+            out.println(searchCruiseList.size() + " cruises found");
 
             WebElement selectedCruise = null;
 
@@ -59,7 +59,7 @@ public class SearchPage extends BasePage {
             Assert.assertNotNull(selectedCruise,
                     "ERROR: All available cruises contain 'VOLI INCLUSI'. No valid cruise to select.");
 
-            out.println("STEP 3: Selecting cruise without 'VOLI INCLUSI'");
+            out.println("Selecting cruise without 'VOLI INCLUSI'");
 
             scrollToElement(selectedCruise);
 
@@ -73,7 +73,7 @@ public class SearchPage extends BasePage {
                 jsClickByElement(detailsButton);
             }
 
-            out.println("STEP 4: Waiting cruise details page…");
+            out.println("Waiting cruise details page…");
 
             // Esperar que aparezca el botón seleccionar sin vuelo
             WebElement selectButton =
@@ -87,7 +87,7 @@ public class SearchPage extends BasePage {
                 jsClickByElement(selectButton);
             }
 
-            out.println("STEP 5: Cruise selected successfully!");
+            out.println("Cruise selected successfully!");
 
         } catch (Exception e) {
             out.println("ERROR selecting cruise: " + e.getMessage());

@@ -84,7 +84,7 @@ public class ExperiencePage extends BasePage {
                 return NextStep.PASSENGER_FORM;
             }
 
-            out.println("Passenger form NOT detected -> going to Cabin Position");
+            out.println("Passenger form NOT detected, going to Cabin Position");
             return NextStep.CABIN_POSITION;
 
         } catch (Exception e) {
@@ -99,7 +99,7 @@ public class ExperiencePage extends BasePage {
 
         WebElement selectedCard = null;
 
-        // 1) Preferencia: card que tenga un CTA checked dentro
+        //Preferencia: card que tenga un CTA checked dentro
         for (WebElement c : cards) {
             if (!c.findElements(selectedCtaInsideCard).isEmpty()) {
                 selectedCard = c;
@@ -118,7 +118,7 @@ public class ExperiencePage extends BasePage {
             }
         }
 
-        // 3) Último fallback: primer card
+        //Último fallback: primer card
         if (selectedCard == null) {
             selectedCard = cards.get(0);
         }

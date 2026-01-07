@@ -17,7 +17,6 @@ public class PassengerFormPage extends BasePage {
     private final By lastamePassenger1 = By.cssSelector("#LastName_1_1"); //nombre del pasajero 1
     private final By birthDayPassenger1 = By.cssSelector("#DateOfBirth_1_1"); //fecha de nacimiento del pasajero 1
     private final By genderPassenger1 = By.cssSelector("#Gender_1_1 select"); //sexo del pasajero 1
-    private final By countryPassenger1 = By.cssSelector("#CountryOfResidence_1_1 select");//nombre del pasajero 1
 
     private final By email = By.cssSelector("#Email__1_1");
     private final By confirmEmail = By.cssSelector("#ConfirmEmail_1_1");
@@ -129,11 +128,11 @@ public class PassengerFormPage extends BasePage {
     public void fillDocumentsIfPresent() {
 
         if (!isVisible(documentPassenger1Dropdown)) {
-            out.println("Documents section not present -> skipping documents");
+            out.println("Documents section not present, skipping documents");
             return;
         }
 
-        out.println("Documents section present -> filling documents");
+        out.println("Documents section present, filling documents");
 
         fillDocumentForPassenger(documentPassenger1Dropdown, ciNumberPassenger1, ciExpiryDatePassenger1);
 
